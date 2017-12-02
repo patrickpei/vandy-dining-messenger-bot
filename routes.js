@@ -10,6 +10,7 @@ let configureRoutes = app => {
         const token = req.query['hub.verify_token'];
         const challenge = req.query['hub.challenge'];
         console.log('Check me out in the console!')
+        console.log(req)
         if (mode && token) {
             // Checks the mode and token sent is correct
             if (mode === 'subscribe' && token === VERIFY_TOKEN) {
