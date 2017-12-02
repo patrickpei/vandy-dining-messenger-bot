@@ -57,7 +57,7 @@ let configureRoutes = app => {
         const options = {
           url: url,
           headers: {
-            'messaging-type': 'RESPONSE',
+            'messaging_type': 'RESPONSE',
             'recipient': {
               'id:': 1734272469940033
             },
