@@ -36,10 +36,15 @@ let configureRoutes = app => {
             }
         }
     });
-    
+<<<<<<< HEAD
+
     app.post('/', (req, res) => {
+=======
+
+    app.post('/webhook', (req, res) => {
+>>>>>>> d52fa2246372cef0bc3e0a0fedd552753f9b8acf
         let body = req.body;
-    
+
         // Page subscriptions only
         if (body.object === 'page') {
             body.entry.forEach(function(entry) {
@@ -47,13 +52,13 @@ let configureRoutes = app => {
                 let webhookEvent = entry.messaging[0];
                 console.log('[webhook]: event: ', webhookEvent);
             });
-    
+
             res.status(200).send('EVENT_RECEIVED');
         } else {
             res.sendStatus(404);
         }
     });
-    
+
     app.post('/webhook', (req, res) => {
         let body = req.body;
 
