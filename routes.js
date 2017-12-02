@@ -69,7 +69,7 @@ let configureRoutes = app => {
 
         function callback(error, response, body) {
           console.log("Error:" + error);
-          console.log("Response:" + response);
+          console.log("Response:" + JSON.stringify(response));
           console.log("Body:" + body);
         };
 
