@@ -34,7 +34,9 @@ let configureRoutes = app => {
         };
 
         function callback(error, response, body) {
-          console.log(error);
+          console.log("Error:" + error);
+          console.log("Response:" + response);
+          console.log("Body:" + body);
         };
 
         rq(options, callback);
