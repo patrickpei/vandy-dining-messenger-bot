@@ -18,28 +18,6 @@ let configureRoutes = app => {
                 res.sendStatus(403);
             }
         }
-        var url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
-                  process.env.access_token;
-        const options = {
-          url: url,
-          headers: {
-            'messaging-type': 'RESPONSE',
-            'recipient': {
-              'id:': 1734272469940033
-            },
-            'message': {
-              'text': "hello, Yunhua!"
-            },
-          },
-        };
-
-        function callback(error, response, body) {
-          console.log("Error:" + error);
-          console.log("Response:" + response);
-          console.log("Body:" + body);
-        };
-
-        rq(options, callback);
     });
 
     app.get('/webhook', (req, res) => {
@@ -74,6 +52,28 @@ let configureRoutes = app => {
         } else {
             res.sendStatus(404);
         }
+        var url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
+                  process.env.access_token;
+        const options = {
+          url: url,
+          headers: {
+            'messaging-type': 'RESPONSE',
+            'recipient': {
+              'id:': 1734272469940033
+            },
+            'message': {
+              'text': "hello, Yunhua!"
+            },
+          },
+        };
+
+        function callback(error, response, body) {
+          console.log("Error:" + error);
+          console.log("Response:" + response);
+          console.log("Body:" + body);
+        };
+
+        rq(options, callback);
     });
 
     app.post('/webhook', (req, res) => {
