@@ -1,2 +1,6 @@
 node_modules
+<<<<<<< HEAD
 .idea/*
+=======
+.idea/
+>>>>>>> 5ea2796d85e19045bf968e163a664985d5c5962b
