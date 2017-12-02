@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const request = require('superagent');
+const rq = require('request');
 
 let configureRoutes = app => {
     app.get('/', (req, res) => {
@@ -17,7 +18,27 @@ let configureRoutes = app => {
                 res.sendStatus(403);
             }
         }
-    })
+        var url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
+                  process.env.access_token;
+        const options = {
+          url: url,
+          headers: {
+            'messaging-type': 'RESPONSE',
+            'recipient': {
+              'id:': 1734272469940033
+            },
+            'message': {
+              'text': "hello, Yunhua!"
+            },
+          },
+        };
+
+        function callback(error, response, body) {
+          console.log('test');
+        };
+
+        request(options, callback);
+    });
 
     app.get('/webhook', (req, res) => {
         const VERIFY_TOKEN = 'WC4y3U^JV@1Ehd^g';
@@ -35,10 +56,10 @@ let configureRoutes = app => {
             }
         }
     });
-    
+
     app.post('/', (req, res) => {
         let body = req.body;
-    
+
         // Page subscriptions only
         if (body.object === 'page') {
             body.entry.forEach(function(entry) {
@@ -46,13 +67,13 @@ let configureRoutes = app => {
                 let webhookEvent = entry.messaging[0];
                 console.log('[webhook]: event: ', webhookEvent);
             });
-    
+
             res.status(200).send('EVENT_RECEIVED');
         } else {
             res.sendStatus(404);
         }
     });
-    
+
     app.post('/webhook', (req, res) => {
         let body = req.body;
 
