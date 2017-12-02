@@ -9,7 +9,7 @@ let configureRoutes = app => {
         const mode = req.query['hub.mode'];
         const token = req.query['hub.verify_token'];
         const challenge = req.query['hub.challenge'];
-
+        console.log('test')
         if (mode && token) {
             // Checks the mode and token sent is correct
             if (mode === 'subscribe' && token === VERIFY_TOKEN) {
@@ -20,7 +20,7 @@ let configureRoutes = app => {
             }
         }
     })
-    
+
     app.get('/webhook', (req, res) => {
         const VERIFY_TOKEN = 'WC4y3U^JV@1Ehd^g';
         const mode = req.query['hub.mode'];
@@ -37,10 +37,10 @@ let configureRoutes = app => {
             }
         }
     });
-    
+
     app.post('/webhook', (req, res) => {
         let body = req.body;
-    
+
         // Page subscriptions only
         if (body.object === 'page') {
             body.entry.forEach(function(entry) {
@@ -48,7 +48,7 @@ let configureRoutes = app => {
                 let webhookEvent = entry.messaging[0];
                 console.log('[webhook]: event: ', webhookEvent);
             });
-    
+
             res.status(200).send('EVENT_RECEIVED');
         } else {
             res.sendStatus(404);
@@ -78,7 +78,7 @@ let configureRoutes = app => {
 
     app.put('/fakeorders', (req, res) => {
         console.log('b', req.body);
-    
+
         res.status(200).send('hi');
     })
 }
