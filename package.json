@@ -1,0 +1,19 @@
+{
+  "name": "vandy-dining-messenger-bot",
+  "version": "1.0.0",
+  "description": "Dank memes (Messenger bot for Vanderbilt Campus Dining)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patrickpei/vandy-dining-messenger-bot.git"
+  },
+  "author": "Roger Li, Melvin Lu, Patrick Pei, Yunhua Zhao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/patrickpei/vandy-dining-messenger-bot/issues"
+  },
+  "homepage": "https://github.com/patrickpei/vandy-dining-messenger-bot#readme"
+}
