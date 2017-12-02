@@ -1,20 +1,29 @@
-var mongoose = require('mongoose');
+let mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/test', { useMongoClient: true })
-    .then(() => {
-        console.log('\t MongoDB connected');
+mongoose.connect('mongodb://localhost:6969', { useMongoClient: true });
 
-        // Import our Data Models
-        app.models = {
-            User: require('./models/user'),
-            Location: require('./models/location'),
-            Food: require('./models/food')
-        };
+let User = require('./models/user');
+let Location = require('./models/location');
+let Food = require('./models/food');
 
-        // Import our API Routes
-        require('./api/v1/game')(app);
-        require('./api/v1/user')(app);
-        require('./api/v1/session')(app);
-    }, err => {
+
+// let User = mongoose.model('User', User);
+// let Location = mongoose.model('Location');
+// let Food = mongoose.model('Food');
+
+
+// test
+let globe = new User({ username: 'globe' });
+globe.save(function (err) {
+    if (err) {
         console.log(err);
-    });
+    } else {
+        console.log('meow');
+    }
+});
+//
+// User.find(function (err, globe) {
+//     if (err) return console.error(err);
+//     console.log(globe);
+// });

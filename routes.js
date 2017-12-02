@@ -1,8 +1,6 @@
 const fetch = require('node-fetch');
 const request = require('superagent');
 
-let orderNumbers = [461, 462, 479, 481, 482, 483, 487, 488, 499, 501];
-
 let configureRoutes = app => {
     app.get('/', (req, res) => {
         const VERIFY_TOKEN = 'WC4y3U^JV@1Ehd^g';
@@ -38,7 +36,24 @@ let configureRoutes = app => {
             }
         }
     });
-
+    
+    app.post('/', (req, res) => {
+        let body = req.body;
+    
+        // Page subscriptions only
+        if (body.object === 'page') {
+            body.entry.forEach(function(entry) {
+                // Gets the message. entry.messaging is arr, but len = 1 so index 0
+                let webhookEvent = entry.messaging[0];
+                console.log('[webhook]: event: ', webhookEvent);
+            });
+    
+            res.status(200).send('EVENT_RECEIVED');
+        } else {
+            res.sendStatus(404);
+        }
+    });
+    
     app.post('/webhook', (req, res) => {
         let body = req.body;
 

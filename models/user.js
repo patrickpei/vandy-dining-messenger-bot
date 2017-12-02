@@ -10,6 +10,7 @@ let User = new Schema({
 
 User.pre('save', function(next) {
    this.username = this.username.toLowerCase();
+   next();
 });
 
 module.exports = mongoose.model('User', User);

@@ -4,12 +4,12 @@ let mongoose            = require('mongoose'),
     Schema              = mongoose.Schema;
 
 let Location = new Schema({
-    location:    {type: String, required: true},
+    name:    {type: String, required: true},
     foods: [{ type: Schema.Types.ObjectId, ref: 'Food' }]
 });
 
 Location.pre('save', function(next) {
-    this.location = this.location.toLowerCase();
+    this.name = this.name.toLowerCase();
     next();
 });
 
