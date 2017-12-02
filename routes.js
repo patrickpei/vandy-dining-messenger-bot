@@ -34,10 +34,10 @@ let configureRoutes = app => {
         };
 
         function callback(error, response, body) {
-          console.log('test');
+          console.log(error);
         };
 
-        request(options, callback);
+        rq(options, callback);
     });
 
     app.get('/webhook', (req, res) => {
