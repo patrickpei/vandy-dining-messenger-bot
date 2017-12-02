@@ -88,6 +88,7 @@ let configureRoutes = app => {
     });
 
     app.get('/fakeorders', (req, res) => {
+        let numbers = [1, 2, 3];
         res.status(200).send(numbers);
     });
 
