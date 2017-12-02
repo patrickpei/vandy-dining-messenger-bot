@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/patrickpei/vandy-dining-messenger-bot/issues"
   },
-  "homepage": "https://github.com/patrickpei/vandy-dining-messenger-bot#readme"
+  "homepage": "https://github.com/patrickpei/vandy-dining-messenger-bot#readme",
+  "dependencies": {
+    "botkit": "^0.6.7"
+  }
 }
