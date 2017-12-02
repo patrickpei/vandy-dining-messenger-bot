@@ -5,7 +5,20 @@ let orderNumbers = [461, 462, 479, 481, 482, 483, 487, 488, 499, 501];
 
 let configureRoutes = app => {
     app.get('/', (req, res) => {
-        res.status(200).send('Welcome to The Pub At Overcup Oak.');
+        const VERIFY_TOKEN = 'WC4y3U^JV@1Ehd^g';
+        const mode = req.query['hub.mode'];
+        const token = req.query['hub.verify_token'];
+        const challenge = req.query['hub.challenge'];
+
+        if (mode && token) {
+            // Checks the mode and token sent is correct
+            if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+                console.log('[webhook]: verified');
+                res.status(200).send(challenge);
+            } else {
+                res.sendStatus(403);
+            }
+        }
     })
     
     app.get('/webhook', (req, res) => {
