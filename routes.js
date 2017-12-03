@@ -55,7 +55,7 @@ let configureRoutes = app => {
         let uri= "https://graph.facebook.com/v2.6/me/messages";
         // let url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
         //           process.env.access_token;
-        const body = {
+        const a_body = {
           'messaging_type': 'RESPONSE',
           'recipient': {
             'id': 1734272469940033
@@ -70,7 +70,7 @@ let configureRoutes = app => {
             "access_token": process.env.access_token
           },
           method: "POST",
-          json: body
+          json: a_body
         };
 
         function callback(error, response, body) {
