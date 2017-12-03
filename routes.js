@@ -41,45 +41,45 @@ let configureRoutes = app => {
         let body = req.body;
 
         // Page subscriptions only
-        if (body.object === 'page') {
-            body.entry.forEach(function(entry) {
-                // Gets the message. entry.messaging is arr, but len = 1 so index 0
-                let webhookEvent = entry.messaging[0];
-                console.log('[webhook]: event: ', webhookEvent);
-                let uri= "https://graph.facebook.com/v2.6/me/messages";
-                // let url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
-                //           process.env.access_token;
-                const request_body = {
-                  'messaging_type': 'RESPONSE',
-                  'recipient': {
-                    'id': webhookEvent.sender.id
-                  },
-                  'message': {
-                    'text': "hello, Yunhua!"
-                  },
-                }
-                const options = {
-                  uri: uri,
-                  qs: {
-                    "access_token": process.env.access_token
-                  },
-                  method: "POST",
-                  json: request_body
-                };
-
-                function callback(error, response, body) {
-                  console.log("Error:" + error);
-                  console.log("Response:" + JSON.stringify(response));
-                  console.log("Body:" + body);
-                };
-
-                rq(options, callback);
-            });
-
-            res.status(200).send('EVENT_RECEIVED');
-        } else {
+        if (body.object !== 'page') {
             res.sendStatus(404);
+            return;
         }
+
+        body.entry.forEach(entry => {
+            // Gets the message. entry.messaging is arr, but len = 1 so index 0
+            console.log('entry: ', JSON.stringify(entry));
+            let webhookEvent = entry.messaging[0];
+            console.log('[webhook]: event: ', webhookEvent);
+            let uri = "https://graph.facebook.com/v2.6/me/messages";
+            const requestBody = {
+              'messaging_type': 'RESPONSE',
+              'recipient': {
+                'id': webhookEvent.sender.id
+              },
+              'message': {
+                'text': "hello, Yunhua!"
+              },
+            }
+            const options = {
+              uri: uri,
+              qs: {
+                "access_token": process.env.access_token
+              },
+              method: "POST",
+              json: requestBody
+            };
+
+            function callback(error, response, body) {
+              console.log("Error:" + JSON.stringify(error));
+              console.log("Response:" + JSON.stringify(response));
+              console.log("Body:" + JSON.stringify(body));
+            };
+
+            rq(options, callback);
+        });
+
+        res.status(200).send('EVENT_RECEIVED');
     });
 
     app.post('/webhook', (req, res) => {
