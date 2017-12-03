@@ -52,19 +52,25 @@ let configureRoutes = app => {
         } else {
             res.sendStatus(404);
         }
-        var url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
-                  process.env.access_token;
-        const options = {
-          url: url,
-          headers: {
-            'messaging_type': 'RESPONSE',
-            'recipient': {
-              'id:': 1734272469940033
-            },
-            'message': {
-              'text': "hello, Yunhua!"
-            },
+        let uri= "https://graph.facebook.com/v2.6/me/messages";
+        // let url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
+        //           process.env.access_token;
+        const body = {
+          'messaging_type': 'RESPONSE',
+          'recipient': {
+            'id': 1734272469940033
           },
+          'message': {
+            'text': "hello, Yunhua!"
+          },
+        }
+        const options = {
+          uri: uri,
+          qs: {
+            "access_token": process.env.access_token
+          },
+          method: "POST",
+          json: body
         };
 
         function callback(error, response, body) {
