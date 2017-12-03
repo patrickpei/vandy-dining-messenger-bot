@@ -5,7 +5,7 @@ let mongoose            = require('mongoose'),
 
 let User = new Schema({
     username:    {type: String, required: true},
-    locations: [{ type: Schema.Types.ObjectId, ref: 'Location' }]
+    score: {type: Number, required: true}
 });
 
 User.pre('save', function(next) {

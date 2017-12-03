@@ -3,8 +3,9 @@ let mongoose            = require('mongoose'),
     Schema              = mongoose.Schema;
 
 let Rating = new Schema({
-    totalRatings: {type: Number},
-    averageRating: {type: Number}
+    userRatings: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    totalRatings: {type: Number, default: 0},
+    averageRating: {type: Number, default: 0}
 });
 
 let Food = new Schema({
