@@ -8,7 +8,6 @@ let configureRoutes = app => {
         const mode = req.query['hub.mode'];
         const token = req.query['hub.verify_token'];
         const challenge = req.query['hub.challenge'];
-        console.log('Check me out in the console!')
         if (mode && token) {
             // Checks the mode and token sent is correct
             if (mode === 'subscribe' && token === VERIFY_TOKEN) {
@@ -38,6 +37,8 @@ let configureRoutes = app => {
     });
 
     app.post('/', (req, res) => {
+        console.log('post/');
+        console.log('body: ', JSON.stringify(req.body));
         let body = req.body;
 
         // Page subscriptions only
@@ -58,7 +59,7 @@ let configureRoutes = app => {
                 'id': webhookEvent.sender.id
               },
               'message': {
-                'text': "hello, Yunhua!"
+                'text': "Hello"
               },
             }
             const options = {

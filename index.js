@@ -4,6 +4,7 @@ const
     bodyParser = require('body-parser'),
     // checkOrders = require('./orders'),
     configureRoutes = require('./routes'),
+    defaultPort = 1337,
     express = require('express'),
     morgan = require('morgan');
 
@@ -12,4 +13,4 @@ app.use(bodyParser.json());
 app.use(morgan('combined'));
 configureRoutes(app);
 
-app.listen(process.env.PORT || 1337, () => console.log('[webhook]: listening'));
+app.listen(process.env.PORT || defaultPort, () => console.log('[webhook]: listening'));
