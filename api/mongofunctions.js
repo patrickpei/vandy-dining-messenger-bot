@@ -59,3 +59,10 @@ let setUserFoodRating = (locationName, foodName, userName, score) => {
     });
 };
 
+
+module.exports = {
+    getAverageFoodRating: getAverageFoodRating,
+    getUserFoodRating: getUserFoodRating,
+    setUserFoodRating: setUserFoodRating
+};
+
