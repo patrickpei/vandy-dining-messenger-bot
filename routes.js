@@ -46,40 +46,40 @@ let configureRoutes = app => {
                 // Gets the message. entry.messaging is arr, but len = 1 so index 0
                 let webhookEvent = entry.messaging[0];
                 console.log('[webhook]: event: ', webhookEvent);
+                let uri= "https://graph.facebook.com/v2.6/me/messages";
+                // let url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
+                //           process.env.access_token;
+                const request_body = {
+                  'messaging_type': 'RESPONSE',
+                  'recipient': {
+                    'id': webhookEvent.event.sender.id
+                  },
+                  'message': {
+                    'text': "hello, Yunhua!"
+                  },
+                }
+                const options = {
+                  uri: uri,
+                  qs: {
+                    "access_token": process.env.access_token
+                  },
+                  method: "POST",
+                  json: request_body
+                };
+
+                function callback(error, response, body) {
+                  console.log("Error:" + error);
+                  console.log("Response:" + JSON.stringify(response));
+                  console.log("Body:" + body);
+                };
+
+                rq(options, callback);
             });
 
             res.status(200).send('EVENT_RECEIVED');
         } else {
             res.sendStatus(404);
         }
-        let uri= "https://graph.facebook.com/v2.6/me/messages";
-        // let url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' +
-        //           process.env.access_token;
-        const a_body = {
-          'messaging_type': 'RESPONSE',
-          'recipient': {
-            'id': 1734272469940033
-          },
-          'message': {
-            'text': "hello, Yunhua!"
-          },
-        }
-        const options = {
-          uri: uri,
-          qs: {
-            "access_token": process.env.access_token
-          },
-          method: "POST",
-          json: a_body
-        };
-
-        function callback(error, response, body) {
-          console.log("Error:" + error);
-          console.log("Response:" + JSON.stringify(response));
-          console.log("Body:" + body);
-        };
-
-        rq(options, callback);
     });
 
     app.post('/webhook', (req, res) => {
