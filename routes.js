@@ -52,7 +52,7 @@ let configureRoutes = app => {
                 const request_body = {
                   'messaging_type': 'RESPONSE',
                   'recipient': {
-                    'id': webhookEvent.event.sender.id
+                    'id': webhookEvent.sender.id
                   },
                   'message': {
                     'text': "hello, Yunhua!"
