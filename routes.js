@@ -50,36 +50,24 @@ let configureRoutes = app => {
         }
 
         body.entry.forEach(entry => {
-            // Gets the message. entry.messaging is arr, but len = 1 so index 0
+            // Gets the message. only ever 1 element in entry.messaging (Array)
             console.log('entry: ', JSON.stringify(entry));
-            let webhookEvent = entry.messaging[0];
-            console.log('[webhook]: event: ', webhookEvent);
-            let uri = "https://graph.facebook.com/v2.6/me/messages";
-            const requestBody = {
-              'messaging_type': 'RESPONSE',
-              'recipient': {
-                'id': webhookEvent.sender.id
-              },
-              'message': {
-                'text': "Hello"
-              },
-            }
+            const webhookEvent = entry.messaging[0];
+            const url = `https://graph.facebook.com/v2.6/me/messages?access_token${process.env.access_token}`;
+            const message = {
+                'messaging_type': 'RESPONSE',
+                'recipient': {
+                    'id': webhookEvent.sender.id
+                },
+                'message': {
+                    'text': "Hello"
+                },
+            };
             const options = {
-              uri: uri,
-              qs: {
-                "access_token": process.env.access_token
-              },
-              method: "POST",
-              json: requestBody
+                method: 'POST',
+                body: message
             };
-
-            function callback(error, response, body) {
-              console.log("Error:" + JSON.stringify(error));
-              console.log("Response:" + JSON.stringify(response));
-              console.log("Body:" + JSON.stringify(body));
-            };
-
-            rq(options, callback);
+            fetch(url, options);
         });
 
         res.status(200).send('EVENT_RECEIVED');
@@ -126,17 +114,8 @@ let configureRoutes = app => {
 
 async function getOrders(req, res) {
     const url = 'http://campusdining.vanderbilt.edu/?action=cmi_yoir&request=orderqueue_ajax&location_id=752';
-    const options = {
-        method: 'get',
-        headers: {
-            action: "cmi_yoir",
-            request: "orderqueue_ajax",
-            location_id: 752
-        }
-    };
-
     const getOrders = () => {
-        return fetch(url, options)
+        return fetch(url)
             .then(res => res.text())
             .then(text => JSON.parse(text))
             .then(orders => orders.map(o => o.order_id))
