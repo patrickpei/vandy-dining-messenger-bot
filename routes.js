@@ -41,23 +41,24 @@ let configureRoutes = app => {
     app.post('/', (req, res) => {
         console.log('post/');
         console.log('body: ', JSON.stringify(req.body));
-        let body = req.body;
+        const requestBody = req.body;
 
         // Page subscriptions only
-        if (body.object !== 'page') {
+        if (requestBody.object !== 'page') {
             res.sendStatus(404);
             return;
         }
 
-        body.entry.forEach(entry => {
+        const entries = requestBody.entry;
+        entries.forEach(entry => {
             // Gets the message. only ever 1 element in entry.messaging (Array)
             console.log('entry: ', JSON.stringify(entry));
-            const webhookEvent = entry.messaging[0];
-            const url = `https://graph.facebook.com/v2.6/me/messages?access_token${process.env.access_token}`;
-            const message = {
+            const message = entry.messaging[0];
+            const url = `https://graph.facebook.com/v2.6/me/messages?access_token=${process.env.access_token}`;
+            const body = {
                 'messaging_type': 'RESPONSE',
                 'recipient': {
-                    'id': webhookEvent.sender.id
+                    'id': message.sender.id
                 },
                 'message': {
                     'text': "Hello"
@@ -65,29 +66,18 @@ let configureRoutes = app => {
             };
             const options = {
                 method: 'POST',
-                body: message
+                body: body
             };
-            fetch(url, options);
+            console.log('url:', url);
+            console.log('body:', body);
+            fetch(url, options)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(console.error);
         });
 
         res.status(200).send('EVENT_RECEIVED');
-    });
-
-    app.post('/webhook', (req, res) => {
-        let body = req.body;
-
-        // Page subscriptions only
-        if (body.object === 'page') {
-            body.entry.forEach(function(entry) {
-                // Gets the message. entry.messaging is arr, but len = 1 so index 0
-                let webhookEvent = entry.messaging[0];
-                console.log('[webhook]: event: ', webhookEvent);
-            });
-
-            res.status(200).send('EVENT_RECEIVED');
-        } else {
-            res.sendStatus(404);
-        }
     });
 
     app.get('/orders', getOrders);
