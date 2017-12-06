@@ -36,11 +36,6 @@ let configureRoutes = app => {
                     'text': ''
                 }
             };
-            const options = {
-                body: JSON.stringify(body),
-                headers: { 'Content-Type': 'application/json' },
-                method: 'POST'
-            };
 
             let text = message.message.text;
             if (text !== undefined) {
@@ -60,6 +55,12 @@ let configureRoutes = app => {
             } else {
                 body.message.text = welcomeMessage;
             }
+
+            const options = {
+                body: JSON.stringify(body),
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST'
+            };
 
             fetch(url, options)
                 .then(res => () => {})
