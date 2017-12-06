@@ -2,41 +2,13 @@ const fetch = require('node-fetch');
 const superagent = require('superagent');
 const rq = require('request');
 
+const welcomeMessage = 'Welcome the Vanderbilt Dining Experience (VDE). How may I help you?';
 let fakeOrders = [];
 
 let configureRoutes = app => {
-    app.get('/', (req, res) => {
-        const VERIFY_TOKEN = 'WC4y3U^JV@1Ehd^g';
-        const mode = req.query['hub.mode'];
-        const token = req.query['hub.verify_token'];
-        const challenge = req.query['hub.challenge'];
-        if (mode && token) {
-            // Checks the mode and token sent is correct
-            if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-                console.log('[webhook]: verified');
-                res.status(200).send(challenge);
-            } else {
-                res.sendStatus(403);
-            }
-        }
-    });
+    app.get('/', getBase);
 
-    app.get('/webhook', (req, res) => {
-        const VERIFY_TOKEN = 'WC4y3U^JV@1Ehd^g';
-        const mode = req.query['hub.mode'];
-        const token = req.query['hub.verify_token'];
-        const challenge = req.query['hub.challenge'];
-
-        if (mode && token) {
-            // Checks the mode and token sent is correct
-            if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-                console.log('[webhook]: verified');
-                res.status(200).send(challenge);
-            } else {
-                res.sendStatus(403);
-            }
-        }
-    });
+    app.get('/webhook', getBase);
 
     app.post('/', (req, res) => {
         console.log('post/');
@@ -55,26 +27,42 @@ let configureRoutes = app => {
             console.log('entry: ', JSON.stringify(entry));
             const message = entry.messaging[0];
             const url = `https://graph.facebook.com/v2.6/me/messages?access_token=${process.env.access_token}`;
-            const body = {
+            let body = {
                 'messaging_type': 'RESPONSE',
                 'recipient': {
                     'id': message.sender.id
                 },
                 'message': {
-                    'text': "Hello"
-                },
+                    'text': ''
+                }
             };
             const options = {
                 body: JSON.stringify(body),
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST'
             };
-            console.log('url:', url);
-            console.log('body:', body);
+
+            let text = message.message.text;
+            if (text !== undefined) {
+                text = text.toLowerCase();
+                
+                if (text.includes('pub')) {
+                    const match = text.match(/-?\d+$/);
+                    if (match === null) {
+                        body.message.text = `Did you include your Pub order number?`;
+                    } else {
+                        const num = match[0];
+                        body.message.text = `Tracking Pub Order #${num} for you.`;
+                    }
+                } else {
+                    body.message.text = welcomeMessage;
+                }
+            } else {
+                body.message.text = welcomeMessage;
+            }
+
             fetch(url, options)
-                .then(res => {
-                    console.log(res);
-                })
+                .then(res => () => {})
                 .catch(console.error);
         });
 
@@ -101,6 +89,22 @@ let configureRoutes = app => {
             res.sendStatus(500);
         }
     });
+}
+
+function getBase(req, res) {
+    const VERIFY_TOKEN = 'WC4y3U^JV@1Ehd^g';
+    const mode = req.query['hub.mode'];
+    const token = req.query['hub.verify_token'];
+    const challenge = req.query['hub.challenge'];
+    if (mode && token) {
+        // Checks the mode and token sent is correct
+        if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+            console.log('[webhook]: verified');
+            res.status(200).send(challenge);
+        } else {
+            res.sendStatus(403);
+        }
+    }
 }
 
 async function getOrders(req, res) {
