@@ -1,16 +1,17 @@
 'use strict';
 
-const
-    bodyParser = require('body-parser'),
-    // checkOrders = require('./orders'),
-    configureRoutes = require('./routes'),
-    defaultPort = 1337,
-    express = require('express'),
-    morgan = require('morgan');
+const bodyParser = require('body-parser');
+const checkPubOrders = require('./pub-orders');
+const configureRoutes = require('./routes');
+const defaultPort = 1337;
+const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(morgan('combined'));
 configureRoutes(app);
+
+setInterval(checkPubOrders, 15000);
 
 app.listen(process.env.PORT || defaultPort, () => console.log('[webhook]: listening'));
