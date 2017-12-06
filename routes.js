@@ -42,10 +42,12 @@ let configureRoutes = app => {
                 text = text.toLowerCase();
                 
                 if (text.includes('pub')) {
-                    const match = text.match(/-?\d+$/);
+                    const match = text.match(/\d+/g);
                     if (match === null) {
                         body.message.text = `Did you include your Pub order number?`;
-                    } else {
+                    } else if (match.length != 1) {
+                        body.message.text = `We detected multiple numbers in your message. Please only include your own pub number.`;
+                    } else if (match.length == 1) {
                         const num = match[0];
                         body.message.text = `Tracking Pub Order #${num} for you.`;
                     }
