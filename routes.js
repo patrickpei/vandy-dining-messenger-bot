@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const superagent = require('superagent');
 const rq = require('request');
 
-const welcomeMessage = 'Welcome the Vanderbilt Dining Experience (VDE). How may I help you?';
+const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE). How may I help you?';
 let fakeOrders = [];
 
 let configureRoutes = app => {
