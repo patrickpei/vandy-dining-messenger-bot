@@ -65,8 +65,9 @@ let configureRoutes = app => {
                 },
             };
             const options = {
-                method: 'POST',
-                body: body
+                body: JSON.stringify(body),
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST'
             };
             console.log('url:', url);
             console.log('body:', body);
