@@ -116,7 +116,7 @@ async function getOrders(req, res) {
         return fetch(url)
             .then(res => res.text())
             .then(text => JSON.parse(text))
-            .then(orders => orders.map(o => o.order_id))
+            .then(orders => orders.map(o => parseInt(o.order_id, 10)).sort())
             .catch(console.error);
     }
 

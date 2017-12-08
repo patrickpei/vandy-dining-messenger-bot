@@ -1,0 +1,225 @@
+<html>
+
+<head>
+    <style>
+        @font-face {
+            font-family: 'SourceSansPro';
+            src: url('file:///android_asset/fonts/SourceSans/SourceSansPro-Regular.otf');
+        }
+
+        body {
+            margin: 10px 20px;
+            font-family: SourceSansPro, sans-serif;
+            font-size: 15px;
+            color: #000;
+        }
+
+        body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        p {
+            margin: 0;
+            padding: 0 5px 5px 5px;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .v {
+            display: inline-block;
+        }
+
+        .vg {
+            display: inline-block;
+        }
+
+        .gf {
+            display: inline-block;
+        }
+
+        .o {
+            display: inline-block;
+        }
+
+        .k {
+            display: inline-block;
+        }
+
+        .h {
+            display: inline-block;
+        }
+
+        span.foodicon {
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            display: inline-block;
+            font-family: "HelveticaNeue-CondensedBold";
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            font-size: 9px;
+            font-weight: bold;
+            line-height: 16px;
+            -webkit-border-radius: 7px;
+            border-radius: 7px;
+            /*background: url('https://app.mymenumanager.net/vanderbilt/gui/icon_cover.png') top left no-repeat;*/
+            cursor: default;
+            opacity: 1;
+        }
+
+        img.foodicon {
+            vertical-align: text-bottom;
+        }
+
+        .foodicon {
+            margin-left: 5px;
+        }
+
+        span.foodicon.white {
+            color: #FFF;
+            /*text-shadow: 0 -1px 0 #000;*/
+        }
+
+        span.foodicon.black {
+            color: #000;
+            /*text-shadow: 0 1px 0 #FFF;*/
+        }
+
+        ul {
+            padding-left: 17px;
+            margin-top: 0;
+        }
+
+        .g {
+            padding-top: 10px;
+        }
+
+        ul+.g {
+            padding-top: 10px;
+        }
+
+        .g:first-child {
+            padding-top: 0;
+        }
+
+        .g .group_title {
+            font-weight: bold;
+        }
+
+        .g .group_subtitle {
+            font-size: 13px;
+        }
+
+        a.nutrition {
+            border-bottom: 1px dotted #CCC;
+        }
+
+        /** GENERAL **/
+
+        .g span.description {
+            font-size: 11px;
+        }
+
+        /** BULLET **/
+
+        .g.bullet span.price {
+            margin-left: 15px;
+        }
+
+        .g.bullet span.price.right_justified {
+            float: right;
+            margin-left: 15px;
+        }
+
+        .g.bullet span.description {
+            display: block;
+        }
+
+        .g.bullet span.description::before {
+            content: '\A';
+        }
+
+        /** COMMA **/
+
+        .g.comma span.price {
+            margin-left: 5px;
+        }
+
+        .g.comma span.price::before {
+            content: '(';
+        }
+
+        .g.comma span.price::after {
+            content: ')';
+        }
+
+        .g.comma span.description {
+            margin-left: 5px;
+        }
+
+        .g.comma span.description::before {
+            content: '(';
+        }
+
+        .g.comma span.description::after {
+            content: ')';
+        }
+    </style>
+</head>
+
+<body>
+    <div class='g bullet'>
+        <ul>
+            <li>Hand Made Hamburger</li>
+            <li>Vegan Burger
+                <span id="icon2" class="foodicon vegan foodicon black" title='Vegan' data-toggle="tooltip" data-container="body"
+                    data-original-title="Vegan" image_id='0' ref='icon2' style='background-color: rgb(0,255,0);'>VG</span>
+            </li>
+            <li>Beef Jumbo Hot Dogs</li>
+            <li>Marinated Grilled Chicken Breast
+                <span id="icon6" class="foodicon halal foodicon white" title='Halal' data-toggle="tooltip"
+                    data-container="body" data-original-title="Halal" image_id='0' ref='icon6' style='background-color: rgb(0,51,153);'>H</span>
+            </li>
+            <li>Fried Chicken Sandwich</li>
+            <li>Chicken Tenders</li>
+            <li>Baked Potato
+                <span id="icon2" class="foodicon vegan foodicon black" title='Vegan' data-toggle="tooltip" data-container="body"
+                    data-original-title="Vegan" image_id='0' ref='icon2' style='background-color: rgb(0,255,0);'>VG</span>
+            </li>
+            <li>Baked Sweet Potato
+                <span id="icon2" class="foodicon vegan foodicon black" title='Vegan' data-toggle="tooltip"
+                    data-container="body" data-original-title="Vegan" image_id='0' ref='icon2' style='background-color: rgb(0,255,0);'>VG</span>
+            </li>
+            <li>Sweet Potato Fries
+                <span id="icon1" class="foodicon vegetarian foodicon white" title='Vegetarian' data-toggle="tooltip"
+                    data-container="body" data-original-title="Vegetarian" image_id='0' ref='icon1' style='background-color: rgb(0,153,0);'>V</span>
+            </li>
+            <li>French Fries
+                <span id="icon1" class="foodicon vegetarian foodicon white" title='Vegetarian' data-toggle="tooltip"
+                    data-container="body" data-original-title="Vegetarian" image_id='0' ref='icon1' style='background-color: rgb(0,153,0);'>V</span>
+            </li>
+            <li>Onion Rings
+                <span id="icon1" class="foodicon vegetarian foodicon white" title='Vegetarian' data-toggle="tooltip"
+                    data-container="body" data-original-title="Vegetarian" image_id='0' ref='icon1' style='background-color: rgb(0,153,0);'>V</span>
+            </li>
+        </ul>
+    </div>
+    <div class='g bullet'>
+        <ul>
+            <li>Fried Green Tomato &amp; Pimento Cheese Burger</li>
+            <li>Grilled Salmon w/ Cilantro Slaw &amp; Avocado Spread</li>
+        </ul>
+    </div>
+</body>
+
+</html>
