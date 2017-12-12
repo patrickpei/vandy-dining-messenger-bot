@@ -37,10 +37,10 @@ const restaurants = [
     'Local Java',
     'The Pub'
 ];
-const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!'
-                       'Say \'menu\ <restaurant>\' to retrieve its current menu'
-                       ', and \'menu list\' to get the names of available'
-                       ' restaurants.';
+const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!\n' +
+                       'Say \'menu\ <restaurant>\' to retrieve its current ' +
+                       'menu, and \'menu list\' to get the names of ' +
+                       ' available restaurants.';
 let fakeOrders = [];
 
 let configureRoutes = app => {
