@@ -37,10 +37,17 @@ const restaurants = [
     'Local Java',
     'The Pub'
 ];
-const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!\n' +
-                       'Say \'menu\ <restaurant>\' to retrieve its current ' +
-                       'menu, and \'menu help\' to get the names of ' +
-                       'available restaurants.';
+const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!\n\n' +
+                       'Available commands:\n\n' +
+                       '`menu help`: get names of available ' +
+                       'restaurants\n\n' +
+                       '`menu <restaurant>`: get the current menu for ' +
+                       'the specified restaurant (can be lowercase, but ' +
+                       'must match one from the list returned by ' +
+                       '`menu help`)\n\n' +
+                       'Send any other text to receive this message again.' +
+                       '\n\nHelp us get better!: ' +
+                       'https://www.facebook.com/vandydiningexp';
 let fakeOrders = [];
 
 let configureRoutes = app => {
