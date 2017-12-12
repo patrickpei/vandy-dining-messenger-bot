@@ -149,7 +149,7 @@ async function postBase(req, res) {
         const message = entry.messaging[0];
         const senderId = message.sender.id;
         const userMessage = message.message.text;
-        const responseText = getResponse(senderId, userMessage);
+        const responseText = await getResponse(senderId, userMessage);
 
         console.log('userMessage: ', userMessage);
         console.log('responseText: ', responseText);
@@ -267,7 +267,7 @@ function respondToUser(userId, responseText) {
     };
 
     console.log('Responding to user: ', JSON.stringify(options));
-    
+
     return fetch(fbUrl, options)
         .then(res => () => {})
         .catch(console.error);
