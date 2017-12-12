@@ -180,20 +180,17 @@ async function getResponse(userId, userMessage) {
     let result;
     if (userMessage.includes('menu')) {
         if (userMessage === 'menu list') {
-            let menuList =
-                'Here is the list of available restaurants ' +
-                'to query:\n';
-            menuList += restaurants.reduce((prev, cur) => `${prev}\n${cur}`);
-            result =
-                menuList.substring(0, menuList.length - 1);
-        } else if (text === 'menu open') {
+            let menuList = 'Here is the list of available restaurants to query:\n';
+            menuList += restaurants.join('\n');
+            result = menuList.substring(0, menuList.length - 1);
+        } else if (userMessage === 'menu open') {
             const openRestaurants =
                 'Here is the list of currently open restaurants ' +
                 'to query:\n';
             const openPlaces = await getOpenRestaurants();
             result = openRestaurants + openPlaces.join('\n');
         } else {
-            const restaurant = text.substring(5).capitalize();
+            const restaurant = userMessage.substring(5).capitalize();
             if (restaurant === 'Food For Thought Cafe') {
                 restaurant[5] = 'f';
             }
@@ -213,8 +210,8 @@ async function getResponse(userId, userMessage) {
             }
             console.log('Sent menu items back to user.');
         }
-    } else if (text.includes('pub')) {
-        const match = text.match(/\d+/g);
+    } else if (userMessage.includes('pub')) {
+        const match = userMessage.match(/\d+/g);
         if (match === null) {
             result = `Did you include your Pub order number?`;
         } else if (match.length > 1) {
@@ -252,7 +249,7 @@ function respondToUser(userId, responseText) {
     const body = {
         'messaging_type': 'RESPONSE',
         'recipient': {
-            'id': senderId
+            'id': userId
         },
         'message': {
             'text': responseText
