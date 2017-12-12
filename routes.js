@@ -39,7 +39,7 @@ const restaurants = [
 ];
 const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!\n' +
                        'Say \'menu\ <restaurant>\' to retrieve its current ' +
-                       'menu, and \'menu list\' to get the names of ' +
+                       'menu, and \'menu help\' to get the names of ' +
                        'available restaurants.';
 let fakeOrders = [];
 
@@ -99,10 +99,12 @@ let configureRoutes = app => {
                             'Here is the list of available restaurants ' +
                             'to query:\n';
                         restaurants.forEach((restaurant) => {
-                            menu_list.push(restaurant + '\n');
+                            menu_list += (restaurant + '\n');
                         });
                         body.message.text =
                             menu_list.substring(0, menu_list.length - 1);
+                    } else {
+                        body.message.text = welcomeMessage;
                     }
                 } else {
                     body.message.text = welcomeMessage;
