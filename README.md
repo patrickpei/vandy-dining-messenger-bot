@@ -9,3 +9,4 @@
     - List of secrets:
         - fb_access_token
         - firebase_auth
+        - prod (true or false)

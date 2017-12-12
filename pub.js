@@ -32,7 +32,8 @@ const checkOrders = async () => {
 };
 
 function getPreparedOrders() {
-    const baseUrl = `https://vde-bot.herokuapp.com/fakeorders`;
+    const baseUrl = process.env.prod === 'true' ? `https://vde-bot.herokuapp.com/orders`
+                                                : `https://vde-bot.herokuapp.com/orders`;
     const options = {
         headers: { 'Content-Type': 'application/json' },
         method: 'GET'
