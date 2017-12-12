@@ -56,6 +56,7 @@ const getUserPubOrders = () => {
 
 module.exports = {
     addPubOrder,
+    deletePubOrder,
     getUserPubOrder,
     getUserPubOrders
 };
