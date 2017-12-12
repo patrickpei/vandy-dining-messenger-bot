@@ -1,7 +1,5 @@
-'use strict';
-
 const bodyParser = require('body-parser');
-const checkPubOrders = require('./pub-orders');
+const checkPubOrders = require('./pub');
 const configureRoutes = require('./routes');
 const defaultPort = 1337;
 const express = require('express');

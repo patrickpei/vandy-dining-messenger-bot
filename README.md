@@ -7,4 +7,5 @@
 ### Development
 - .env file in the top level that has all the app secrets. The format of each line is secret1=sh
     - List of secrets:
-        - access_token
+        - fb_access_token
+        - firebase_auth

@@ -50,13 +50,14 @@ const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!\n\n' +
                        'Send any other text to receive this message again.' +
                        '\n\nHelp us get better!: ' +
                        'https://www.facebook.com/vandydiningexp';
-let fakeOrders = [];
+let fakeOrders = [372, 374, 394];
 
 let configureRoutes = app => {
     app.get('/', getBase);
 
     app.get('/webhook', getBase);
 
+<<<<<<< HEAD
     app.post('/', (req, res) => {
         console.log('post/');
         console.log('body: ', JSON.stringify(req.body));
@@ -159,6 +160,9 @@ let configureRoutes = app => {
 
         res.status(200).send('EVENT_RECEIVED');
     });
+=======
+    app.post('/', postBase);
+>>>>>>> Add pub order tracking
 
     app.get('/orders', getOrders);
 
@@ -191,17 +195,15 @@ async function getOpenRestaurants() {
     };
     return rp(options)
             .then(($) => {
-                let open_restaurants =[];
+                let openRestaurants =[];
                 let open_concepts = $('.menu_block')
                         .find('div.concept_name');
-                for (var i = 0; i < open_concepts.length; ++i) {
-                    open_restaurants.push($(open_concepts[i]).text());
+                for (let i = 0; i < open_concepts.length; ++i) {
+                    openRestaurants.push($(open_concepts[i]).text());
                 }
-                return open_restaurants;
+                return openRestaurants;
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(console.error);
 }
 
 async function getMenuItems(restaurant) {
@@ -223,9 +225,7 @@ async function getMenuItems(restaurant) {
                 }
                 return menu;
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(console.error);
 }
 
 function getBase(req, res) {
@@ -242,6 +242,106 @@ function getBase(req, res) {
             res.sendStatus(403);
         }
     }
+}
+
+async function postBase(req, res) {
+    console.log('post/');
+    console.log('body: ', JSON.stringify(req.body));
+    const requestBody = req.body;
+
+    // Page subscriptions only
+    if (requestBody.object !== 'page') {
+        res.sendStatus(404);
+        return;
+    }
+
+    const entries = requestBody.entry;
+    entries.forEach(async entry => {
+        // Gets the message. only ever 1 element in entry.messaging (Array)
+        console.log('entry: ', JSON.stringify(entry));
+        const message = entry.messaging[0];
+        const url =
+            `https://graph.facebook.com/v2.6/me/messages?access_token=` +
+            `${process.env.fb_access_token}`;
+        let body = {
+            'messaging_type': 'RESPONSE',
+            'recipient': {
+                'id': message.sender.id
+            },
+            'message': {
+                'text': ''
+            }
+        };
+
+        let text = message.message.text;
+        if (text !== undefined) {
+            text = text.toLowerCase();
+            if (text.includes('menu')) {
+                if (text == 'menu list') {
+                    let menuList =
+                        'Here is the list of available restaurants ' +
+                        'to query:\n';
+                    menuList += restaurants.reduce((prev, cur) => `${prev}\n${cur}`);
+                    body.message.text =
+                        menuList.substring(0, menuList.length - 1);
+                } else if (text == 'menu open') {
+                    let openRestaurants =
+                        'Here is the list of currently open restaurants ' +
+                        'to query:\n';
+                    let open_places = await getOpenRestaurants();
+                    body.message.text = openRestaurants + open_places.join('\n');
+                } else {
+                    let restaurant = text.substring(5).capitalize();
+                    if (restaurant == 'Food For Thought Cafe') {
+                        restaurant[5] = 'f';
+                    }
+                    if (restaurant == 'Kissam') {
+                        restaurant = "The Kitchen";
+                    }
+                    console.log('Getting menu for ' + restaurant + '.');
+                    let menu_items = await getMenuItems(restaurant);
+                    let menu_items_text = menu_items.join('\n');
+                    body.message.text = menu_items_text.length == 0 ||
+                                        menu_items_text.length > 640
+                        ? `Sorry, for one reason or another, I'm unable ` +
+                          `to provide you the menu for ${restaurant} at ` +
+                          `this time. Working on a fix!`
+                        : menu_items_text;
+                    console.log('Sent menu items back to user.');
+                }
+            } else if (text.includes('pub')) {
+                const match = text.match(/\d+/g);
+                if (match === null) {
+                    body.message.text =
+                        `Did you include your Pub order number?`;
+                } else if (match.length != 1) {
+                    body.message.text =
+                        `We detected multiple numbers in your message. ` +
+                        `Please only include your own pub number.`;
+                } else if (match.length == 1) {
+                    const num = match[0];
+                    body.message.text =
+                        `Tracking Pub Order #${num} for you.`;
+                }
+            } else {
+                body.message.text = welcomeMessage;
+            }
+        } else {
+            body.message.text = welcomeMessage;
+        }
+
+        const options = {
+            body: JSON.stringify(body),
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST'
+        };
+
+        fetch(url, options)
+            .then(res => () => {})
+            .catch(console.error);
+    });
+
+    res.status(200).send('EVENT_RECEIVED');
 }
 
 async function getOrders(req, res) {
