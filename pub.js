@@ -8,6 +8,11 @@ const getUserPubOrders = require('./datastore/firebase/rest').getUserPubOrders;
 dotenv.config();
 
 const checkOrders = async () => {
+    if (!isPubOpen()) {
+        console.log(`Pub is not open now. Not checking orders.`);
+        return;
+    }
+
     console.log(`Checking users' pub orders...`);
 
     const preparedOrders = new Set(await getPreparedOrders());
@@ -43,6 +48,19 @@ function getPreparedOrders() {
         .then(res => res.text())
         .then(JSON.parse)
         .catch(console.error);
+}
+
+/**
+ * Pub is open is 11:00am CT at the earliest, 9:00pm CT at the latest
+ * Will ping from 11:00am -  10:00pm CT (in case orders unfilled at 9pm)
+ *              = 11:00 - 22:00 CT
+ *              = 17:00 - 04:00 UTC (UTC is 6 hours ahead of CT)
+ */
+function isPubOpen() {
+    let date = new Date();
+    let utcHour = date.getUTCHours();
+
+    return utcHour >= 17 || utcHour <= 4;
 }
 
 function sendOrderReadyMessage(userId, userOrder) {
