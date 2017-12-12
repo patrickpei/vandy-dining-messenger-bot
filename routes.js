@@ -1,8 +1,46 @@
 const fetch = require('node-fetch');
 const superagent = require('superagent');
-const rq = require('request');
+const rp = require('request-promise');
+const cheerio = require('cheerio');
 
-const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE). How may I help you?';
+const restaurants = [
+    'Bamboo Bistro',
+    'Food for Thought Cafe',
+    'Suzie\'s Cafe',
+    'Rocket Subs',
+    'Bakery',
+    'Beverages',
+    'Bowls @ CJB',
+    'Chef James Bistro',
+    'Deli',
+    'Fresh Mex',
+    'Grill Rand',
+    'Orto',
+    'Rand/Commons',
+    'Salad',
+    'Soup',
+    'Bowls & Wraps',
+    'Brick Oven',
+    'Center Island Salad Bar',
+    'Chef\'s Table',
+    'Common Grounds',
+    'Commons',
+    'Grill',
+    'Pastries & Sweets',
+    'Sizzle',
+    'Soup Commons',
+    'Wok Station',
+    'Grins Vegetarian Cafe',
+    'The Kitchen',
+    'Rocket Subs',
+    'Pi & Leaf',
+    'Local Java',
+    'The Pub'
+];
+const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!'
+                       'Say \'menu\ <restaurant>\' to retrieve its current menu'
+                       ', and \'menu list\' to get the names of available'
+                       ' restaurants.';
 let fakeOrders = [];
 
 let configureRoutes = app => {
@@ -40,7 +78,7 @@ let configureRoutes = app => {
             let text = message.message.text;
             if (text !== undefined) {
                 text = text.toLowerCase();
-                
+
                 if (text.includes('pub')) {
                     const match = text.match(/\d+/g);
                     if (match === null) {
@@ -91,6 +129,39 @@ let configureRoutes = app => {
             console.error(err.message);
             res.sendStatus(500);
         }
+    });
+
+    app.get('/menus', (req, res) => {
+        const options = {
+            url: 'http://vanderbilt.mymenumanager.net/',
+            transform: function (body) {
+                return cheerio.load(body);
+            }
+        };
+
+        rp(options)
+            .then(($) => {
+                let user_request = 'The Kitchen';
+                let restaurant = $('.menu_block').find(`div.concept_name:contains(${user_request})`);
+                console.log(restaurant.parent().html());
+                // console.log(restaurant.parent().find('li').each(
+                //     () => {
+                //         console.log($(this).text())
+                //     }
+                // ));
+                // let menu = [];
+                // $('.menu_block').eq(0).find('li').each(
+                //     () => {
+                //         menu.push($(this).text())
+                //     });
+                // menu.forEach((item) => {
+                //     console.log(item);
+                // });
+                res.status(200).send('Done.');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     });
 }
 
