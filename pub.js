@@ -23,7 +23,9 @@ const checkOrders = async () => {
     console.log(`Checking users' pub orders...`);
 
     const preparedOrders = new Set(await getPreparedOrders());
+    console.log('preparedOrders: ', preparedOrders);
     const userPubOrders = await getUserPubOrders();
+    console.log('userPubOrders: ', JSON.stringify(userPubOrders));    
     for (let userId in userPubOrders) {
         let userOrder = userPubOrders[userId];
         if (!preparedOrders.has(userOrder)) {
