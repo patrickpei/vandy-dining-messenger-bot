@@ -171,7 +171,7 @@ function putFakeOrders(req, res) {
     }
 }
 
-function getResponse(userId, userMessage) {
+async function getResponse(userId, userMessage) {
     if (userMessage === undefined || userMessage === null || userMessage.length === 0) {
         return welcomeMessage;
     }
