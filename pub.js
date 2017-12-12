@@ -27,7 +27,7 @@ const checkOrders = async () => {
     const userPubOrders = await getUserPubOrders();
     console.log('userPubOrders: ', JSON.stringify(userPubOrders));    
     for (let userId in userPubOrders) {
-        let userOrder = userPubOrders[userId];
+        let userOrder = parseInt(userPubOrders[userId], 10);
         if (!preparedOrders.has(userOrder)) {
             continue;
         }

@@ -12,7 +12,7 @@ const initDatabase = async () => {
     const options = {
         body: JSON.stringify({
             "pubOrders": {
-                "dummyId": "dummyValue"
+                "dummyId": 0
             },
             "ratings": {
                 "dummyId": "dummyValue"
