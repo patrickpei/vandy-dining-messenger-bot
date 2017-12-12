@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const superagent = require('superagent');
 const rp = require('request-promise');
 const cheerio = require('cheerio');
+const addPubOrder = require('./datastore/firebase/rest').addPubOrder;
 
 String.prototype.capitalize = function() {
     return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
@@ -217,6 +218,7 @@ async function postBase(req, res) {
                     const num = match[0];
                     body.message.text =
                         `Tracking Pub Order #${num} for you.`;
+                    addPubOrder(message.sender.id, num);
                 }
             } else {
                 body.message.text = welcomeMessage;
