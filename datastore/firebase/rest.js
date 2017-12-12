@@ -18,6 +18,17 @@ const addPubOrder = (userId, orderNum) => {
         .catch(console.error);
 };
 
+const deletePubOrder = (userId, orderNum) => {
+    const baseUrl = `https://vde-bot.firebaseio.com/pubOrders/${userId}.json?auth=${process.env.firebase_auth}`;
+    const options = {
+        method: 'DELETE'
+    };
+
+    fetch(baseUrl, options)
+        .then(res => res.text())
+        .catch(console.error);
+}
+
 const getUserPubOrder = (userId) => {
     const baseUrl = `https://vde-bot.firebaseio.com/pubOrders/${userId}.json?auth=${process.env.firebase_auth}`;
     const options = {
