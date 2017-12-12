@@ -104,7 +104,8 @@ let configureRoutes = app => {
                             'Here is the list of currently open restaurants ' +
                             'to query:\n';
                         let open_places = await getOpenRestaurants();
-                        body.message.text = open_places.join('\n');
+                        body.message.text = open_restaurants +
+                            open_places.join('\n');
                     } else {
                         let restaurant = text.substring(5).capitalize();
                         if (restaurant == 'Food For Thought Cafe') {
