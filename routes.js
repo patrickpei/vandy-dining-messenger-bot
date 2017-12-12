@@ -40,7 +40,7 @@ const restaurants = [
 const welcomeMessage = 'Welcome to Vanderbilt Dining Experience (VDE)!\n' +
                        'Say \'menu\ <restaurant>\' to retrieve its current ' +
                        'menu, and \'menu list\' to get the names of ' +
-                       ' available restaurants.';
+                       'available restaurants.';
 let fakeOrders = [];
 
 let configureRoutes = app => {
@@ -82,12 +82,27 @@ let configureRoutes = app => {
                 if (text.includes('pub')) {
                     const match = text.match(/\d+/g);
                     if (match === null) {
-                        body.message.text = `Did you include your Pub order number?`;
+                        body.message.text =
+                            `Did you include your Pub order number?`;
                     } else if (match.length != 1) {
-                        body.message.text = `We detected multiple numbers in your message. Please only include your own pub number.`;
+                        body.message.text =
+                            `We detected multiple numbers in your message. ` +
+                            `Please only include your own pub number.`;
                     } else if (match.length == 1) {
                         const num = match[0];
-                        body.message.text = `Tracking Pub Order #${num} for you.`;
+                        body.message.text =
+                            `Tracking Pub Order #${num} for you.`;
+                    }
+                } else if (text.includes('menu')) {
+                    if (text == 'menu help') {
+                        let menu_list =
+                            'Here is the list of available restaurants ' +
+                            'to query:\n';
+                        restaurants.forEach((restaurant) => {
+                            menu_list.push(restaurant + '\n');
+                        });
+                        body.message.text =
+                            menu_list.substring(0, menu_list.length - 1);
                     }
                 } else {
                     body.message.text = welcomeMessage;
