@@ -194,7 +194,7 @@ async function getResponse(userId, userMessage) {
             const openPlaces = await getOpenRestaurants();
             result = openRestaurants + openPlaces.join('\n');
         } else {
-            const restaurant = userMessage.substring(5).capitalize();
+            let restaurant = userMessage.substring(5).capitalize();
             if (restaurant === 'Food For Thought Cafe') {
                 restaurant[5] = 'f';
             }
